@@ -2,12 +2,14 @@ import express from 'express';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors(
     {
         origin: '*',
@@ -16,9 +18,11 @@ app.use(cors(
 ));
 
 // to import routes 
-import authRouter from './routes/authRoute.js'
+import authRouter from './routes/authRoute.js';
+import postRouter from './routes/postRoute.js';
 
 app.use('/api/v1/auth',authRouter);
+app.use('/api/v1/posts',postRouter);
 
 const PORT = 3030;
 app.listen(PORT,async()=>{
