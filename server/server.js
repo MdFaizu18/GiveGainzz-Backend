@@ -20,10 +20,11 @@ app.use(cors(
 // to import routes 
 import authRouter from './routes/authRoute.js';
 import postRouter from './routes/postRoute.js';
+import ticketRouter from './routes/ticketRoute.js';
 
 app.use('/api/v1/auth',authRouter);
 app.use('/api/v1/posts',postRouter);
-
+app.use('/api/v1/ticket',ticketRouter);
 const PORT = 3030;
 app.listen(PORT,async()=>{
     try {

@@ -81,7 +81,11 @@ const userSchema = new mongoose.Schema({
             ref: 'Post',
             default: []
         }
-    ]
+    ],
+    ticketCount: {
+        type: Number,
+        default: 3,
+    },
 },
     { timestamps: true }
 );
