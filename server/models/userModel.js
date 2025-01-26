@@ -84,7 +84,7 @@ const userSchema = new mongoose.Schema({
     ],
     ticketCount: {
         type: Number,
-        default: 3,
+        default: 0,
     },
 },
     { timestamps: true }

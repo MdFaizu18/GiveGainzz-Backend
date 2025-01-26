@@ -8,8 +8,8 @@ import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = Router();
 
-router.get("/", authMiddleware, getUserTickets);
-router.get("/count", authMiddleware, getTicketCount);
-router.post("/create", authMiddleware, createTicket);
+router.get("/", getUserTickets);
+router.get("/count", getTicketCount);
+router.post("/create", createTicket);
 
 export default router;

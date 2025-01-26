@@ -6,7 +6,7 @@ export const initializeTicketsForUser = async (userId) => {
     try {
       await User.findByIdAndUpdate(
         userId,
-        { ticketCount: 3 }, // Add ticket count field with value 3
+        { ticketCount: 100 }, // Add ticket count field with value 3
         { new: true, upsert: true } // Create if doesn't exist
       );
     } catch (error) {
@@ -28,8 +28,9 @@ export const initializeTicketsForUser = async (userId) => {
         locationLink,
       } = req.body;
   
-      const userId = req.userId;
+      const userId = req.body.userId; // Extract userId from the request body
   
+      // Use async/await to handle Promises
       const user = await User.findById(userId);
   
       if (!user || user.ticketCount <= 0) {
@@ -50,16 +51,16 @@ export const initializeTicketsForUser = async (userId) => {
         locationLink,
       });
   
-      user.ticketCount -= 1;
-      await user.save();
+      user.ticketCount -= 1; // Deduct one ticket from the user's ticket count
+      await user.save(); // Save the updated user document
   
       res.status(201).json({ message: "Ticket created successfully.", ticket });
     } catch (error) {
-      console.error(error);
+      console.error("Error creating ticket:", error);
       res.status(500).json({ message: "Error creating ticket." });
     }
   };
-
+  
 export const getUserTickets = async (req, res) => {
   try {
     const userId = req.userId;
@@ -72,18 +73,21 @@ export const getUserTickets = async (req, res) => {
 };
 
 export const getTicketCount = async (req, res) => {
-    try {
-      const userId = req.userId;
-      const user = await User.findById(userId).select("ticketCount");
-  
-      if (!user) {
-        return res.status(404).json({ message: "User not found." });
-      }
-  
-      res.status(200).json({ ticketCount: user.ticketCount });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Error fetching ticket count." });
+  try {
+    const { userId } = req.query; // Extract userId from query parameters
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
     }
-  };
-  
+
+    // Fetch the ticket count from the User model
+    const user = await User.findById(userId, 'ticketCount'); // Only retrieve the ticketCount field
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ ticketCount: user.ticketCount });
+  } catch (error) {
+    console.error("Error fetching ticket count:", error);
+    res.status(500).json({ message: "Error fetching ticket count" });
+  }
+};

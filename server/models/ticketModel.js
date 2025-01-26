@@ -43,7 +43,7 @@ const ticketSchema = new mongoose.Schema(
         },
         workMode: {
             type: String,
-            enum: ["online", "offline"],
+            enum: ["Online", "Offline"],
             required: true,
         },
         locationLink: {
